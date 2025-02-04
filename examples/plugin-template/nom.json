@@ -1,0 +1,13 @@
+{
+  "name": "@example/my-plugin",
+  "version": "1.0.0",
+  "description": "Example Nom plugin",
+  "author": "Your Name",
+  "latestVersion": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "sha256": "...",
+      "published": "2023-11-01"
+    }
+  }
+}

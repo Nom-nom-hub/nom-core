@@ -1,0 +1,13 @@
+{
+  "name": "@nom/example-plugin",
+  "version": "1.0.0",
+  "description": "Example plugin for Nom CLI",
+  "author": "Nom",
+  "latestVersion": "1.0.0",
+  "versions": {
+    "1.0.0": {
+      "sha256": "auto-generated-on-release",
+      "published": "2023-11-01"
+    }
+  }
+}

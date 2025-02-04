@@ -1,0 +1,63 @@
+{
+  "name": "nom-cli",
+  "version": "0.1.0",
+  "description": "Plugin Manager for WebAssembly",
+  "type": "module",
+  "engines": {
+    "node": ">=16.0.0",
+    "bun": ">=1.0.0"
+  },
+  "bin": {
+    "nom": "dist/cli/index.js"
+  },
+  "scripts": {
+    "dev": "bun run src/cli/index.ts",
+    "build": "bun build src/cli/index.ts --outdir dist",
+    "test": "bun test",
+    "prepublishOnly": "bun run build"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.1",
+    "@types/cli-progress": "^3.11.6",
+    "@wasmer/wasi": "0.12.0",
+    "@wasmer/wasmfs": "0.12.0",
+    "cac": "^6.7.14",
+    "chalk": "4",
+    "cli-progress": "^3.12.0",
+    "figlet": "^1.6.0",
+    "semver": "^7.7.1"
+  },
+  "devDependencies": {
+    "@types/figlet": "^1.5.6",
+    "@types/node": "^20.8.0",
+    "@types/semver": "^7.5.8",
+    "bun-types": "latest",
+    "typescript": "^5.2.2"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "wasm",
+    "webassembly",
+    "plugin",
+    "cli"
+  ],
+  "author": "Nom",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nom-cli/nom-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nom-cli/nom-core/issues"
+  },
+  "homepage": "https://github.com/nom-cli/nom-core#readme",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "license": "ISC"
+}

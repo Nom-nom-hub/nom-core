@@ -1,0 +1,33 @@
+name: Release Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+      
+      - name: Build WASM
+        run: |
+          cargo build --target wasm32-unknown-unknown --release
+          
+      - name: Generate Checksum
+        run: |
+          sha256sum target/wasm32-unknown-unknown/release/*.wasm > checksum.txt
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            target/wasm32-unknown-unknown/release/*.wasm
+            checksum.txt
