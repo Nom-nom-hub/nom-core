@@ -3,10 +3,18 @@ use serde::{Serialize, Deserialize};
 use serde_json::Value;
 use regex::Regex;
 
+#[derive(Serialize)]
+struct ValidationEvent {
+    field: String,
+    valid: bool,
+    message: String,
+}
+
 #[wasm_bindgen]
 pub struct Validator {
     email_regex: Regex,
     url_regex: Regex,
+    callback: Option<js_sys::Function>,
 }
 
 #[wasm_bindgen]
@@ -16,11 +24,30 @@ impl Validator {
         Validator {
             email_regex: Regex::new(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").unwrap(),
             url_regex: Regex::new(r"^https?://[\w\-]+(\.[\w\-]+)+[/#?]?.*$").unwrap(),
+            callback: None,
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn on(&mut self, callback: js_sys::Function) {
+        self.callback = Some(callback);
+    }
+
+    fn emit(&self, event: ValidationEvent) {
+        if let Some(callback) = &self.callback {
+            let event_json = serde_json::to_string(&event).unwrap();
+            let _ = callback.call1(&JsValue::NULL, &JsValue::from_str(&event_json));
         }
     }
 
     pub fn validate_email(&self, email: &str) -> bool {
-        self.email_regex.is_match(email)
+        let valid = self.email_regex.is_match(email);
+        self.emit(ValidationEvent {
+            field: "email".to_string(),
+            valid,
+            message: if valid { "Valid email".to_string() } else { "Invalid email format".to_string() },
+        });
+        valid
     }
 
     pub fn validate_url(&self, url: &str) -> bool {
