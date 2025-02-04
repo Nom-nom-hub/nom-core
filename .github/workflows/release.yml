@@ -17,17 +17,19 @@ jobs:
           toolchain: stable
           target: wasm32-unknown-unknown
       
-      - name: Build WASM
+      - name: Build WASM Plugins
         run: |
-          cargo build --target wasm32-unknown-unknown --release
+          cd plugins/auth && cargo build --target wasm32-unknown-unknown --release
+          cd ../validator && cargo build --target wasm32-unknown-unknown --release
+          cd ../logger && cargo build --target wasm32-unknown-unknown --release
           
       - name: Generate Checksum
         run: |
-          sha256sum target/wasm32-unknown-unknown/release/*.wasm > checksum.txt
+          sha256sum plugins/*/target/wasm32-unknown-unknown/release/*.wasm > checksum.txt
           
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            target/wasm32-unknown-unknown/release/*.wasm
+            plugins/*/target/wasm32-unknown-unknown/release/*.wasm
             checksum.txt
