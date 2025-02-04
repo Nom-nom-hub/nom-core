@@ -3,28 +3,45 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="app">
+    <header class="hero">
+      <nav class="nav">
+        <div class="logo">
+          <img src="/nom-logo.svg" alt="Nom Core" />
+          <span>Nom Core</span>
+        </div>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#plugins">Plugins</a>
+          <a href="#docs">Docs</a>
+          <a href="https://github.com/Nom-nom-hub/nom-core" class="github-link">
+            <img src="/github.svg" alt="GitHub" />
+          </a>
+        </div>
+      </nav>
+      
+      <div class="hero-content">
+        <h1>Plugin Manager for WebAssembly</h1>
+        <p>Build extensible applications with secure, high-performance plugins</p>
+        <div class="cta-buttons">
+          <a href="#get-started" class="primary-btn">Get Started</a>
+          <a href="#docs" class="secondary-btn">Documentation</a>
+        </div>
+      </div>
+    </header>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<style>
+.app {
+  font-family: 'Inter', sans-serif;
+  color: #2c3e50;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.hero {
+  background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%);
+  min-height: 100vh;
+  color: white;
+  padding: 2rem;
 }
 </style>
