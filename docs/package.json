@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Documentation for Nom Core - A powerful WebAssembly plugin system that enables secure, high-performance plugin architecture for modern applications",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
