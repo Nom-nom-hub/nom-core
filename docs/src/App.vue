@@ -1,5 +1,14 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, computed } from 'vue'
+import nomLogo from './assets/nom-logo.svg'
+import githubIcon from './assets/github.svg'
+import discordIcon from './assets/discord.svg'
+
+const email = ref('')
+const isEmailValid = ref(false)
+const activeTab = ref('npm')
+const logs = ref([])
+
 </script>
 
 <template>
@@ -7,7 +16,7 @@ import HelloWorld from './components/HelloWorld.vue'
     <header class="hero">
       <nav class="nav">
         <div class="logo">
-          <img src="/nom-logo.svg" alt="Nom Core" />
+          <img :src="nomLogo" alt="Nom Core" />
           <span>Nom Core</span>
         </div>
         <div class="nav-links">
@@ -15,7 +24,7 @@ import HelloWorld from './components/HelloWorld.vue'
           <a href="#plugins">Plugins</a>
           <a href="#docs">Docs</a>
           <a href="https://github.com/Nom-nom-hub/nom-core" class="github-link">
-            <img src="/github.svg" alt="GitHub" />
+            <img :src="githubIcon" alt="GitHub" />
           </a>
         </div>
       </nav>
@@ -43,5 +52,16 @@ import HelloWorld from './components/HelloWorld.vue'
   min-height: 100vh;
   color: white;
   padding: 2rem;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.nav-links img {
+  width: 24px;
+  height: 24px;
+  color: white;
 }
 </style>
