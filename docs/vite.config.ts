@@ -12,6 +12,12 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL('./index.html', import.meta.url))
+      },
+      output: {
+        // Ensure proper chunk naming for better caching
+        manualChunks: {
+          vue: ['vue', 'vue-router']
+        }
       }
     }
   },
