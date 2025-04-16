@@ -1,7 +1,7 @@
 {
   "name": "@nom/example-plugin",
   "version": "1.0.0",
-  "description": "Example plugin for Nom CLI",
+  "description": "Example plugin for Nom CLI - demonstrates basic plugin functionality",
   "author": "Nom",
   "latestVersion": "1.0.0",
   "versions": {

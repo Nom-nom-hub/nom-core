@@ -4,10 +4,11 @@ import chalk from 'chalk';
 import { SingleBar, Presets } from 'cli-progress';
 import { PluginManager } from '../runtime/PluginManager';
 import { RegistryManager } from '../registry/RegistryManager';
-import { PluginMetadata } from '../types';  // Add this import
+import { PluginMetadata } from '../types';
 import semver from 'semver';
+import { join, readFile, writeFile, mkdir } from 'fs/promises';
 
-const CLI_VERSION = '0.1.0';
+const CLI_VERSION = '0.2.4';
 
 // Add welcome banner with version
 const banner = figlet.textSync('Nom CLI', { 
@@ -123,10 +124,25 @@ async function main() {
 
   cli
     .command('list', 'List all installed plugins')
-    .action(async () => {
+    .option('--json', 'Output in JSON format')
+    .action(async (options: { json?: boolean }) => {
       const plugins = await pluginManager.listPlugins();
       if (plugins.length === 0) {
         console.log(chalk.yellow('No plugins installed'));
+        return;
+      }
+
+      if (options.json) {
+        const pluginsData = plugins.map(pluginName => {
+          const plugin = pluginManager.getPlugin(pluginName);
+          return {
+            name: pluginName,
+            version: plugin?.metadata?.version || 'unknown',
+            author: plugin?.metadata?.author || 'unknown',
+            description: plugin?.metadata?.description || ''
+          };
+        });
+        console.log(JSON.stringify(pluginsData, null, 2));
         return;
       }
 
@@ -134,6 +150,12 @@ async function main() {
       for (const pluginName of plugins) {
         const plugin = pluginManager.getPlugin(pluginName);
         console.log(chalk.dim('├─') + ` ${chalk.blue(pluginName)} ${chalk.gray(`v${plugin?.metadata?.version || 'unknown'}`)}`);
+        if (plugin?.metadata?.description) {
+          console.log(chalk.dim('│  ') + chalk.dim(plugin.metadata.description));
+        }
+        if (plugin?.metadata?.author) {
+          console.log(chalk.dim('│  ') + chalk.dim(`Author: ${plugin.metadata.author}`));
+        }
       }
       console.log();
     });
@@ -261,6 +283,101 @@ async function main() {
         progressBar.stop();
         const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         console.error(chalk.red(`\n❌ ${errorMessage}`));
+      }
+    });
+
+  cli
+    .command('pin <plugin>', 'Pin a plugin to a specific version')
+    .option('--version <version>', 'Version to pin to (defaults to currently installed version)')
+    .action(async (plugin: string, options: { version?: string }) => {
+      try {
+        const pluginObj = pluginManager.getPlugin(plugin);
+        if (!pluginObj) {
+          console.error(chalk.red(`Plugin ${plugin} is not installed`));
+          return;
+        }
+        
+        const currentVersion = pluginObj.metadata?.version || 'unknown';
+        const versionToPin = options.version || currentVersion;
+        
+        // Get plugin metadata to verify version exists
+        const metadata = await registry.getPluginMetadata(plugin);
+        if (!metadata) {
+          console.error(chalk.red(`Failed to get metadata for plugin: ${plugin}`));
+          return;
+        }
+        
+        if (!metadata.versions[versionToPin]) {
+          console.error(chalk.red(`Version ${versionToPin} not found for plugin ${plugin}`));
+          return;
+        }
+        
+        // Create or update pin file
+        const pinPath = join(process.cwd(), '.nom', 'pins.json');
+        let pins = {};
+        
+        try {
+          const pinFile = await readFile(pinPath, 'utf-8');
+          pins = JSON.parse(pinFile);
+        } catch (err) {
+          // File doesn't exist or is invalid, create new
+          await mkdir(join(process.cwd(), '.nom'), { recursive: true });
+        }
+        
+        pins[plugin] = versionToPin;
+        await writeFile(pinPath, JSON.stringify(pins, null, 2));
+        
+        console.log(chalk.green(`✅ Pinned ${chalk.blue(plugin)} to version ${chalk.yellow(versionToPin)}`));
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        console.error(chalk.red(`Failed to pin plugin: ${errorMessage}`));
+      }
+    });
+
+  cli
+    .command('rollback <plugin>', 'Rollback a plugin to a previous version')
+    .option('--version <version>', 'Specific version to rollback to')
+    .action(async (plugin: string, options: { version?: string }) => {
+      try {
+        console.log(chalk.dim(`\n🔄 Rolling back ${chalk.blue(plugin)}...`));
+        
+        // Get plugin metadata
+        const metadata = await registry.getPluginMetadata(plugin);
+        if (!metadata) {
+          console.error(chalk.red(`Plugin ${plugin} not found`));
+          return;
+        }
+        
+        // If no version specified, use previous version
+        if (!options.version) {
+          const versions = Object.keys(metadata.versions).sort(semver.compare).reverse();
+          if (versions.length < 2) {
+            console.error(chalk.red(`No previous versions available for ${plugin}`));
+            return;
+          }
+          
+          // Current version is the first in the sorted list, previous is second
+          options.version = versions[1];
+        }
+        
+        // Verify the version exists
+        if (!metadata.versions[options.version]) {
+          console.error(chalk.red(`Version ${options.version} not found for plugin ${plugin}`));
+          return;
+        }
+        
+        // Install the previous version
+        console.log(chalk.dim(`Rolling back to version ${chalk.yellow(options.version)}...`));
+        const success = await registry.installPlugin(plugin, options.version);
+        
+        if (success) {
+          console.log(chalk.green(`✅ Successfully rolled back ${plugin} to v${options.version}`));
+        } else {
+          console.error(chalk.red(`Failed to rollback ${plugin}`));
+        }
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        console.error(chalk.red(`Rollback failed: ${errorMessage}`));
       }
     });
 

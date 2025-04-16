@@ -36,16 +36,32 @@ export class RegistryManager {
       hideCursor: true,
     }, Presets.shades_classic);
 
+    const MAX_RETRIES = 3;
+    let retries = 0;
+
     try {
       console.log(chalk.bold(`\n📦 Installing ${chalk.blue(name)}${version ? chalk.gray(` @ ${version}`) : ''}\n`));
       
       const [registry, pluginName] = this.parsePluginName(name);
       progressBar.start(100, 0, { stage: `Fetching metadata...` });
-      const metadata = await this.fetchPluginMetadata(registry, pluginName);
+      
+      // Add retry logic for metadata fetch
+      let metadata = null;
+      while (retries < MAX_RETRIES && !metadata) {
+        try {
+          metadata = await this.fetchPluginMetadata(registry, pluginName);
+          if (!metadata) throw new Error("Failed to fetch metadata");
+        } catch (err) {
+          retries++;
+          if (retries >= MAX_RETRIES) throw err;
+          progressBar.update(10, { stage: `Retrying metadata fetch (${retries}/${MAX_RETRIES})...` });
+          await new Promise(resolve => setTimeout(resolve, 1000 * retries)); // Exponential backoff
+        }
+      }
       
       if (!metadata) {
         progressBar.stop();
-        return null; // Early return, error already logged by GithubRegistry
+        return null;
       }
       progressBar.update(20);
 
@@ -94,6 +110,9 @@ export class RegistryManager {
     } catch (error: any) {
       progressBar.stop();
       console.error(chalk.red(`\n❌ Installation failed:`), error.message);
+      if (error.code === 'ENOTFOUND' || error.code === 'ETIMEDOUT') {
+        console.error(chalk.yellow('Network error: Please check your internet connection'));
+      }
       return null;
     }
   }
