@@ -2,7 +2,7 @@
 
 Nom Core is a powerful WebAssembly plugin system that enables secure, high-performance plugin architecture for modern applications.
 
-![Nom Core](https://github.com/nom-cli/nom-core/raw/main/docs/src/assets/nom-logo.svg)
+![Nom Core](./docs/src/assets/nom-logo.svg)
 
 ## Features
 
