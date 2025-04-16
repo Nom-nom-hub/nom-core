@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'
+// Remove router import since it doesn't exist yet
 
 // Create and mount the app
 const app = createApp(App)
-app.use(router)
+// app.use(router) // Comment out or remove this line
 app.mount('#app')
