@@ -4,20 +4,14 @@ import { fileURLToPath, URL } from 'url'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/nom-core/',  // This matches your GitHub repo name
+  base: '/nom-core/',  // Ensure this matches your GitHub repo name exactly
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    sourcemap: true,
+    sourcemap: false, // Disable sourcemaps for production
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL('./index.html', import.meta.url))
-      },
-      output: {
-        // Ensure proper chunk naming for better caching
-        manualChunks: {
-          vue: ['vue', 'vue-router']
-        }
       }
     }
   },
