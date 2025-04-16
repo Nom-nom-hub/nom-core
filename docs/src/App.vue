@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import nomLogo from './assets/nom-logo.svg'
 import githubIcon from './assets/github.svg'
 import discordIcon from './assets/discord.svg'
+import './style.css'
 
 const email = ref('')
 const isEmailValid = ref(false)
@@ -215,6 +216,13 @@ const getInstallCommand = computed(() => {
 </template>
 
 <style>
+/* Add these basic styles to get started */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
 .app {
   font-family: 'Inter', sans-serif;
   color: #2c3e50;
