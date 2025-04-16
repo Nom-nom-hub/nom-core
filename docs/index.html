@@ -1,13 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./src/assets/nom-logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nom Core - WebAssembly Plugin System</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="./src/main.js"></script>
-  </body>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/nom-logo.svg">
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <img src="assets/nom-logo.svg" alt="Nom Core Logo">
+                <span>Nom Core</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#plugins">Plugins</a></li>
+                <li><a href="#docs">Docs</a></li>
+                <li><a href="https://github.com/nom-cli/nom-core" class="github-link">
+                    <img src="assets/github.svg" alt="GitHub">
+                </a></li>
+            </ul>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+        
+        <div class="hero container">
+            <h1>Plugin Manager for WebAssembly</h1>
+            <p>Build extensible applications with secure, high-performance plugins</p>
+            <div class="cta-buttons">
+                <a href="#get-started" class="btn primary-btn">Get Started</a>
+                <a href="#docs" class="btn secondary-btn">Documentation</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="section">
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h3>Plugin Management</h3>
+                    <p>Install, update, and manage WebAssembly plugins with ease.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure Execution</h3>
+                    <p>Run plugins in isolated WebAssembly environments for maximum security.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>High Performance</h3>
+                    <p>Enjoy native-like performance with WebAssembly technology.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Cross-Platform</h3>
+                    <p>Works on any platform that supports WebAssembly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="get-started" class="section alt-bg">
+        <div class="container">
+            <h2>Get Started</h2>
+            <div class="install-container">
+                <div class="install-tabs">
+                    <button class="tab-btn active" data-tab="npm">npm</button>
+                    <button class="tab-btn" data-tab="yarn">yarn</button>
+                    <button class="tab-btn" data-tab="bun">bun</button>
+                </div>
+                <div class="install-content">
+                    <pre><code id="install-command">npm install -g @teckmill/nom-cli</code></pre>
+                    <button class="copy-btn" aria-label="Copy to clipboard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="plugins" class="section">
+        <div class="container">
+            <h2>Plugin Ecosystem</h2>
+            <p class="section-desc">Discover and use plugins from our growing ecosystem, or create your own.</p>
+            <div class="plugins-grid">
+                <div class="plugin-card">
+                    <h3>Authentication Plugin</h3>
+                    <p>Add secure authentication to your application</p>
+                    <a href="https://github.com/nom-cli/nom-core/tree/main/plugins/auth" class="plugin-link">View Plugin</a>
+                </div>
+                <div class="plugin-card">
+                    <h3>Validator Plugin</h3>
+                    <p>Validate data with customizable rules</p>
+                    <a href="https://github.com/nom-cli/nom-core/tree/main/plugins/validator" class="plugin-link">View Plugin</a>
+                </div>
+                <div class="plugin-card">
+                    <h3>Logger Plugin</h3>
+                    <p>Advanced logging capabilities for your application</p>
+                    <a href="https://github.com/nom-cli/nom-core/tree/main/plugins/logger" class="plugin-link">View Plugin</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs" class="section alt-bg">
+        <div class="container">
+            <h2>Documentation</h2>
+            <div class="docs-grid">
+                <div class="doc-card">
+                    <h3>Quick Start</h3>
+                    <p>Get up and running with Nom Core in minutes</p>
+                    <a href="#" class="doc-link">Read Guide</a>
+                </div>
+                <div class="doc-card">
+                    <h3>API Reference</h3>
+                    <p>Detailed API documentation for developers</p>
+                    <a href="#" class="doc-link">View API</a>
+                </div>
+                <div class="doc-card">
+                    <h3>Plugin Development</h3>
+                    <p>Learn how to create your own plugins</p>
+                    <a href="#" class="doc-link">Read Guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="container">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter for the latest updates, tutorials, and plugin releases.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email" class="email-input" required>
+                <button type="submit" class="btn subscribe-btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/nom-logo.svg" alt="Nom Core">
+                    <span>Nom Core</span>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Project</h4>
+                        <a href="#features">Features</a>
+                        <a href="#plugins">Plugins</a>
+                        <a href="#docs">Documentation</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Community</h4>
+                        <a href="https://github.com/nom-cli/nom-core">GitHub</a>
+                        <a href="#">Discord</a>
+                        <a href="#">Twitter</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="#">Terms</a>
+                        <a href="#">Privacy</a>
+                        <a href="#">License</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; <span id="current-year"></span> Nom Core. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>
