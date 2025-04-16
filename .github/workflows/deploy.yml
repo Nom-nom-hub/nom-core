@@ -2,26 +2,24 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache-dependency-path: './docs/package-lock.json'
-          cache: 'npm'
-      
-      - name: Install dependencies
+          node-version: '18'
+
+      - name: Install Dependencies
         run: |
           cd docs
-          npm ci
+          npm install
 
       - name: Build
         run: |
@@ -33,5 +31,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/dist
-          force_orphan: true
-          commit_message: "Deploy: ${GITHUB_SHA}"
